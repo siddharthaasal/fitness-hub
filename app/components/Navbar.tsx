@@ -5,21 +5,33 @@ export default function Navabar(){
 
     const session = useSession();
     
-    // if(session.data){
-    // console.log(session.data.user)
-    // }
+    async function handleSignIn() {
+        try{
+            await signIn();
+        }catch(error){
+            console.error("Error while signing in: ", error);
+        }
+    }
+
+    async function handleSignOut() {
+        try{
+            await signOut();
+        }catch(error){
+            console.error("Error while logging out: ", error);
+        }
+    }
     
     return(
         <>
-            <div className="flex justify-between">
+            <div className="flex justify-between bg-blue-300  p-3">
                 <div>
                     Fithub
                 </div>
                 <div>
-                    {session.data?.user && <button onClick={() => signOut()}>Logout</button>}
-                    {!session.data?.user && <button onClick={() => signIn()}>Signin</button>}
+                    {session.data?.user && <button onClick={handleSignOut}>Logout</button>}
+                    {!session.data?.user && <button onClick={handleSignIn}>Signin</button>}
                 </div>
-            </div>
+            </div>           
         </>
     )
 }

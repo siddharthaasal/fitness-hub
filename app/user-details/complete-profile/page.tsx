@@ -2,6 +2,8 @@
 import { useState } from "react"
 import { useRouter } from "next/router"
 import {z} from "zod";
+import {useForm, SubmitHandler} from "react-hook-form";
+
 
 
 export default function(){

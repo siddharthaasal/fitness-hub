@@ -1,27 +1,27 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react"
 
-export default function Navabar(){
+export default function Navabar() {
 
     const session = useSession();
-    
+
     async function handleSignIn() {
-        try{
+        try {
             await signIn();
-        }catch(error){
+        } catch (error) {
             console.error("Error while signing in: ", error);
         }
     }
 
     async function handleSignOut() {
-        try{
+        try {
             await signOut();
-        }catch(error){
+        } catch (error) {
             console.error("Error while logging out: ", error);
         }
     }
-    
-    return(
+
+    return (
         <>
             <div className="flex justify-between bg-blue-300  p-3">
                 <div>
@@ -31,9 +31,7 @@ export default function Navabar(){
                     {session.data?.user && <button onClick={handleSignOut}>Logout</button>}
                     {!session.data?.user && <button onClick={handleSignIn}>Signin</button>}
                 </div>
-            </div>           
+            </div>
         </>
     )
 }
-
-

@@ -1,17 +1,17 @@
 "use client"
 
 
-import {z} from "zod";
-import {useForm, SubmitHandler} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod"
+import { z } from "zod";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
 
-enum GenderEnum{
+enum GenderEnum {
     Male = "Male",
     Female = "Female",
     Other = "Other",
 }
 
-enum ActivityLevelEnum{
+enum ActivityLevelEnum {
     High = "High",
     Medium = "Medium",
     Low = "Low",
@@ -19,37 +19,44 @@ enum ActivityLevelEnum{
 
 const userDetailsSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters long"),
-    gender: z.nativeEnum(GenderEnum,{required_error:"Please select a gender"}),
+    gender: z.nativeEnum(GenderEnum, { required_error: "Please select a gender" }),
     age: z.number()
         .min(1, "Age must be grater than zero")
         .max(120, "Age must be less than 120"),
     height: z.number()
-        .min(50, "Height must be at least 50 cm") 
-        .max(250, "Height must be less than or equal to 250 cm"), 
+        .min(50, "Height must be at least 50 cm")
+        .max(250, "Height must be less than or equal to 250 cm"),
     currentWeight: z.number()
-        .min(20, "Weight must be at least 20 kg") 
+        .min(20, "Weight must be at least 20 kg")
         .max(300, "Weight must be less than or equal to 300 kg"),
     goalWeight: z.number()
         .min(20, "Goal weight must be at least 20 kg")
         .max(300, "Goal weight must be less than or equal to 300 kg"),
     timeLeftToAchieveGoal: z.number(),
-    activityLevel: z.nativeEnum(ActivityLevelEnum,{required_error:"Please select an Activity Level"})
+    activityLevel: z.nativeEnum(ActivityLevelEnum, { required_error: "Please select an Activity Level" })
 })
 
 type FormFields = z.infer<typeof userDetailsSchema>;
 
-export default function(){
-    
-    const {register, handleSubmit, formState: {errors} } = useForm<FormFields>({
+
+
+export default function () {
+
+    const { register, handleSubmit, formState: { errors } } = useForm<FormFields>({
         resolver: zodResolver(userDetailsSchema),
     });
-    
 
-    return(
+    function onSubmit(data: FormFields) {
+        console.log("Form submitted data is \n ");
+    }
+
+
+
+    return (
         <>
             <h1>Complete your Profile</h1>
 
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
                 <div>
                     <label>Username</label>
@@ -69,25 +76,25 @@ export default function(){
 
                 <div>
                     <label>Age</label>
-                    <input {...register("age")} type="number" placeholder="Age (cm)" />
+                    <input {...register("age", { valueAsNumber: true })} type="number" placeholder="Age (cm)" />
                     {errors.age && <p>{errors.age.message}</p>}
                 </div>
 
                 <div>
                     <label>Current Weight</label>
-                    <input {...register("currentWeight")} type="number" step="0.01" placeholder="Current Weight (kg)" />
+                    <input {...register("currentWeight", { valueAsNumber: true })} type="number" step="0.01" placeholder="Current Weight (kg)" />
                     {errors.currentWeight && <p>{errors.currentWeight.message}</p>}
                 </div>
 
-                 <div>
+                <div>
                     <label>Goal Weight</label>
-                    <input {...register("goalWeight")} type="number" step="0.01" placeholder="Goal Weight (kg)" />
+                    <input {...register("goalWeight", { valueAsNumber: true })} type="number" step="0.01" placeholder="Goal Weight (kg)" />
                     {errors.goalWeight && <p>{errors.goalWeight.message}</p>}
                 </div>
-                
+
                 <div>
                     <label>Time to Achieve Goal</label>
-                    <input {...register("timeLeftToAchieveGoal")} type="number" placeholder="Time to achieve goal (months)" />
+                    <input {...register("timeLeftToAchieveGoal", { valueAsNumber: true })} type="number" placeholder="Time to achieve goal (months)" />
                     {errors.timeLeftToAchieveGoal && <p>{errors.timeLeftToAchieveGoal.message}</p>}
                 </div>
 
@@ -100,8 +107,8 @@ export default function(){
                     </select>
                     {errors.activityLevel && <p>{errors.activityLevel.message}</p>}
                 </div>
-                
 
+                <button type="submit">Submit</button>
             </form>
 
         </>

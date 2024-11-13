@@ -27,16 +27,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     },
                 });
             }
-            const dbUser = await prisma.user.findUnique({
-                where: { email: user.email },
-                include: { details: true }, // Include user details in the query
-            });
+            // const dbUser = await prisma.user.findUnique({
+            //     where: { email: user.email },
+            //     include: { details: true }, // Include user details in the query
+            // });
 
-            // Check if user details are missing and prompt to complete them
-            if (dbUser && !dbUser.details) {
-                // Redirect to a page to fill in the missing details
-                return "/user-details/complete-profile";
-            }
+            // // Check if user details are missing and prompt to complete them
+            // if (dbUser && !dbUser.details) {
+            //     // Redirect to a page to fill in the missing details
+            //     return "/user-details/complete-profile";
+            // }
             return true;
         },
         async session({ session, token }) {

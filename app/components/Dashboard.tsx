@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 export default function Dashboard() {
 
-
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -19,6 +18,8 @@ export default function Dashboard() {
             console.log("User details \n", data);
             if (!data.details) {
                 router.push("./user-details/complete-profile");
+            } else {
+                console.log("You have already filled your profile!!");
             }
         }
     }

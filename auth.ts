@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client"
 import NextAuth from "next-auth"
-import email from "next-auth/providers/email";
 import Google from "next-auth/providers/google"
 
 const prisma = new PrismaClient();
@@ -40,14 +39,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return true;
         },
-        async session({ session, user }) {
-            const dbUser = await prisma.user.findUnique({
-                where: {
-                    email: session.user.email
-                },
-            })
-            session.user.id = dbUser?.id;
-            return session;
+        async session({ session, token }) {
+            try {
+                const dbUser = await prisma.user.findUnique({
+                    where: {
+                        email: session.user.email,
+                    },
+                });
+
+                if (dbUser) {
+                    session.user.id = dbUser.id; // Attach user ID to session
+                }
+
+                return session;
+            } catch (error) {
+                console.error("Error in session callback:", error);
+                return session; // Return the unmodified session in case of error
+            }
         },
     },
 })

@@ -16,3 +16,6 @@ node --watch src/server.js
 
 will add env config later
 maybe, will write a single script to start both frontend and backend
+
+
+http://localhost:3001/api/auth/signup

@@ -6,3 +6,61 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model User {
+  id                      Int                      @id @default(autoincrement())
+  email                   String                   @unique
+  hashedPassword          String
+  profile                 Profile?
+  nutritionalRequirements NutritionalRequirements?
+  meals                   Meal[]
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+}
+
+model Profile {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique
+  user          User     @relation(fields: [userId], references: [id])
+  name          String
+  age           Int
+  gender        Gender
+  height        Float
+  currentWeight Float
+  goalWeight    Float
+  goalTimeFrame Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model NutritionalRequirements {
+  id                    Int      @id @default(autoincrement())
+  userId                Int      @unique
+  user                  User     @relation(fields: [userId], references: [id])
+  caloriesRequired      Int
+  carbohydratesRequired Int
+  proteinsRequired      Int
+  fatsRequired          Int
+  fiberRequired         Int
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Meal {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+  name          String // e.g., "Breakfast", "Lunch", "Chicken Salad"
+  calories      Int
+  carbohydrates Int
+  proteins      Int
+  fats          Int
+  fiber         Int
+  timestamp     DateTime @default(now()) // When the meal was consumed
+}

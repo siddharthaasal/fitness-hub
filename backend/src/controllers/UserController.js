@@ -66,5 +66,28 @@ async function signin(req, res) {
     }
 }
 
+async function fetchProfile(req, res) {
+    try {
+        const userId = req.user.userId;
+        const profile = await prisma.profile.findUnique(
+            {
+                where: { userId }
+            }
+        );
 
-export { signup, signin };
+        if (!profile) {
+            return res.json({ profileExists: false });
+        }
+
+        return res.json({ profileExists: true, profile });
+    } catch (error) {
+        console.error("Error fetching profile in the fetchProfile Controller : ", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+async function editProfile(req, res) {
+
+}
+
+export { signup, signin, fetchProfile, editProfile };

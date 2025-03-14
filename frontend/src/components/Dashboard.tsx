@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function Dashboard() {
-    const [profileLoaded, setProfileLoaded] = useState(false);
+    const navigate = useNavigate();
+
+    const [tokenVerified, setTokenVerified] = useState(false);
+    const [profileExists, setProfileExists] = useState(false);
     const [response, setResponse] = useState<any>(null);
 
     async function loadDashboard() {
@@ -15,7 +19,13 @@ export default function Dashboard() {
             if (res.status === 200) {
                 console.log(res.data);
                 setResponse(res.data);
-                setProfileLoaded(true);
+                setTokenVerified(true);
+                if (res.data.profileExists == false) {
+                    navigate("/edit-profile");
+                } else {
+                    setProfileExists(true);
+                }
+
             }
         } catch (error: any) {
             console.error("Error fetching profile:", error.response?.data || error.message);
@@ -29,7 +39,7 @@ export default function Dashboard() {
     return (
         <div>
             <h2>Hello there, welcome to Fithub</h2>
-            {profileLoaded ? (
+            {profileExists ? (
                 <div>
                     <h3>Welcome user! Your profile:</h3>
                     <pre>{JSON.stringify(response, null, 2)}</pre>

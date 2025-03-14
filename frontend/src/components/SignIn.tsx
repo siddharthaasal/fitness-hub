@@ -46,7 +46,7 @@ export default function SignIn() {
                         <label className="text-sm font-medium">Email</label>
                         <input
                             {...register("email")}
-                            placeholder="xyz@email.com"
+                            placeholder="xyz@mail.com"
                             className="border p-2 rounded-md focus:outline-none focus:ring focus:ring-gray-300"
                         />
                         {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}

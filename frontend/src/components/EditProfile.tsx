@@ -31,7 +31,7 @@ export default function EditProfile() {
         console.log("Form data: ", data);
         try {
             const response = await axios.post(
-                "http://localhost:3001/api/edit-profile",
+                "http://localhost:3001/api/auth/edit-profile",
                 data,
                 {
                     withCredentials: true

@@ -86,8 +86,29 @@ async function fetchProfile(req, res) {
     }
 }
 
-async function editProfile(req, res) {
+async function profileEdit(req, res) {
+    try {
+        console.log("Profile Data received from frontend: ", req.body);
+        const { name, age, gender, height, currentWeight, goalWeight, goalTimeFrame } = req.body;
 
+        if (!name || !age || !gender || !height || !currentWeight || !goalWeight || !goalTimeFrame) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        const userId = req.user.userId;
+
+        const updatedProfile = await prisma.profile.upsert({
+            where: { userId },
+            update: { name, age, gender, height, currentWeight, goalWeight, goalTimeFrame },
+            create: { userId, name, age, gender, height, currentWeight, goalWeight, goalTimeFrame },
+        });
+
+        return res.status(200).json({ message: "Profile updated successfully", updatedProfile });
+    } catch (error) {
+        console.error("Error in editProfile: ", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 }
 
-export { signup, signin, fetchProfile, editProfile };
+
+export { signup, signin, fetchProfile, profileEdit };

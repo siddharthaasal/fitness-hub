@@ -1,7 +1,7 @@
 import prisma from "../config/prisma.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import { computeNutritionValue } from "../utils/nutritionCalculator.js";
 async function signup(req, res) {
     try {
         const { email, password } = req.body;
@@ -79,7 +79,17 @@ async function fetchProfile(req, res) {
             return res.json({ profileExists: false });
         }
 
-        return res.json({ profileExists: true, profile });
+        const nutritionData = await prisma.nutritionalRequirements.findUnique(
+            {
+                where: { userId }
+            }
+        );
+
+        if (!nutritionData) {
+            return res.json({ nutritionData: false });
+        }
+
+        return res.json({ profileExists: true, profile, nutritionData });
     } catch (error) {
         console.error("Error fetching profile in the fetchProfile Controller : ", error);
         return res.status(500).json({ error: "Internal Server Error" });
@@ -101,6 +111,27 @@ async function profileEdit(req, res) {
             where: { userId },
             update: { name, age, gender, height, currentWeight, goalWeight, goalTimeFrame },
             create: { userId, name, age, gender, height, currentWeight, goalWeight, goalTimeFrame },
+        });
+
+        const nutritionData = computeNutritionValue(age, gender, height, currentWeight, goalWeight, goalTimeFrame);
+
+        await prisma.nutritionalRequirements.upsert({
+            where: { userId },
+            update: {
+                caloriesRequired: nutritionData.caloriesRequired,
+                carbohydratesRequired: nutritionData.carbohydratesRequired,
+                proteinsRequired: nutritionData.proteinsRequired,
+                fatsRequired: nutritionData.fatsRequired,
+                fiberRequired: nutritionData.fiberRequired,
+            },
+            create: {
+                userId,
+                caloriesRequired: nutritionData.caloriesRequired,
+                carbohydratesRequired: nutritionData.carbohydratesRequired,
+                proteinsRequired: nutritionData.proteinsRequired,
+                fatsRequired: nutritionData.fatsRequired,
+                fiberRequired: nutritionData.fiberRequired,
+            },
         });
 
         return res.status(200).json({ message: "Profile updated successfully", updatedProfile });

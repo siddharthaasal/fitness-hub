@@ -1,8 +1,15 @@
-
 export default function Footer() {
     return (
-        <footer className="bg-gray-800 text-white p-4 mt-8 text-center">
-            <p>&copy; {new Date().getFullYear()} Siddharth Aasal All rights reserved.</p>
-        </footer>
+        <footer className="w-full py-6 px-6 bg-white  border-border">
+            <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
+                <p className="text-sm text-muted-foreground">
+                    &copy; {new Date().getFullYear()} FitHub. All rights reserved.
+                </p>
+            </div>
+
+
+        </footer >
     );
-}
+};
+
+

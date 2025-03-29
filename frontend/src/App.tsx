@@ -5,7 +5,7 @@ import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Dashboard from "./components/Dashboard";
 import EditProfile from './components/EditProfile';
-import Index from './pages/Index';
+import HeroSection from './components/HeroSection';
 
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/hero" element={<HeroSection />} />
       </Routes>
     </>
   )

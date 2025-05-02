@@ -6,7 +6,7 @@ import Signup from './pages/Signup';
 import Dashboard from "./components/Dashboard";
 import EditProfile from './components/EditProfile';
 import HeroSection from './components/HeroSection';
-
+import MealPrompt from "./components/MealPrompt"
 
 function App() {
 
@@ -19,6 +19,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/hero" element={<HeroSection />} />
+        <Route path="/meal" element={<MealPrompt />} />
+
       </Routes>
     </>
   )

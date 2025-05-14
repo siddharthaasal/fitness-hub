@@ -10,13 +10,13 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import axios from "axios"
-
+import MealDetails from "./MealDetails"
 
 
 export default function AllMeals() {
     const [date, setDate] = React.useState<Date>();
     const [cleanedDate, setCleanedDate] = React.useState<any>();
-    const [mealsData, setMealsData] = React.useState<any>();
+    const [mealsData, setMealsData] = React.useState<any[]>([]);
 
     React.useEffect(
         () => {
@@ -70,7 +70,20 @@ export default function AllMeals() {
         );
         console.log(response.data);
         // console.log(meals.data);
-        // setMealsData(meals.data);
+        setMealsData(response.data.meals);
+    }
+
+    async function hanldeDeleteMeal(mealId: Number) {
+        try {
+            await axios.delete(`http://localhost:3001/api/meals/delete/`, {
+                data: { id: mealId },
+                withCredentials: true,
+            })
+            setMealsData((prev) => prev.filter((meal) => meal.id !== mealId));
+        } catch (err) {
+            console.error("Error deleting meal ", err);
+            alert("Failed to delete meal.");
+        }
     }
 
     return (
@@ -101,6 +114,23 @@ export default function AllMeals() {
             <button onClick={fetchMeals}>Fetch Meals</button>
             <div>
                 <h1 className="bg-gray-200 mt-10">Showing all meals for {cleanedDate}</h1>
+                <div className="flex flex-col gap-4 mt-4">
+                    {mealsData.map((meal, index) => (
+                        <MealDetails
+                            key={meal.id}
+                            id={meal.id}
+                            idx={(index + 1).toString()}
+                            desc={meal.name}
+                            cal={meal.calories.toString()}
+                            carbs={meal.carbohydrates.toString()}
+                            prot={meal.proteins.toString()}
+                            fats={meal.fats.toString()}
+                            fib={meal.fiber.toString()}
+                            onDelete={hanldeDeleteMeal}
+                        />
+                    ))}
+                </div>
+
             </div>
         </>
 

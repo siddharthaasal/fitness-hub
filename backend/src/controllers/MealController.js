@@ -70,6 +70,23 @@ async function fetchMeals(req, res) {
 
 }
 
+async function deleteMeal(req, res) {
+  console.log("Inside Meal Controller to del meal")
+  const mealId = req.body.id;
+  try {
+    await prisma.meal.delete({
+      where: {
+        id: mealId,
+      },
+    })
+    console.log("Meal Deleted")
+    return res.status(200).json({ message: "Meal deleted" });
+  } catch (error) {
+    console.error("Error deleting meal in the MealController: ", error);
+    return res.status(500).json({ error: "Failed to delete meal." });
+  }
+}
+
 function getISTBoundsFromLocalDate(localDateStr) {
   // Example: "2025-05-13"
   const [year, month, day] = localDateStr.split("-").map(Number);
@@ -84,4 +101,4 @@ function getISTBoundsFromLocalDate(localDateStr) {
 
 
 
-export { addMeal, fetchMeals };
+export { addMeal, fetchMeals, deleteMeal };

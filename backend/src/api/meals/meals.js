@@ -3,6 +3,7 @@ import express from "express";
 import authMiddleware from "../../middlewares/authMiddleware.js";
 import { addMeal } from "../../controllers/MealController.js";
 import { fetchMeals } from "../../controllers/MealController.js";
+import { deleteMeal } from "../../controllers/MealController.js";
 
 const router = express.Router();
 
@@ -24,6 +25,16 @@ router.get(
     next();
   },
   fetchMeals,
+);
+
+router.delete(
+  "/delete",
+  authMiddleware,
+  (req, res, next) => {
+    console.log("Incoming req to delete meal received over backend");
+    next();
+  },
+  deleteMeal,
 );
 
 export default router;

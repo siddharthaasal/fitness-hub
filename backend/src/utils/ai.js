@@ -30,7 +30,8 @@ async function mealDescToNutritionalData(mealDescription) {
       "vitamin_a": "in µg",
       "potassium": "in mg"
     }
-    Meal description:\n`;
+    Meal description:\n
+    DO NOT RESPOND WITH ANY OTHER LINES EXCEPT OF THIS JSON, IF THE PROMPT S NOT A MEAL DESRIPTION JUST RETURN 0 AS VALUE IN ALL THE JSON FIELDS ASKED.`;
   const finalizedPrompt = basePrompt + mealDescription;
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",

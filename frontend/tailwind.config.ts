@@ -22,6 +22,9 @@ export default {
                 sans: ['Instrument Sans', 'system-ui', 'sans-serif'],
                 syne: ['Syne', 'system-ui', 'sans-serif'],
             },
+            borderColor: theme => ({
+                border: 'var(--sidebar-border)', // Explicitly add this too
+            }),
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',

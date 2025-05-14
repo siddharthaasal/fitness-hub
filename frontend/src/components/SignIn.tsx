@@ -34,7 +34,7 @@ export default function SignIn() {
                 navigate("/dashboard");
             }
         } catch (error) {
-            console.error("Error signing up:", error);
+            console.error("Error signing in:", error);
         }
     }
 

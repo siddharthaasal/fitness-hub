@@ -2,6 +2,7 @@ import { Router } from "express";
 import express from "express";
 import authMiddleware from "../../middlewares/authMiddleware.js";
 import { addMeal } from "../../controllers/MealController.js";
+import { fetchMeals } from "../../controllers/MealController.js";
 
 const router = express.Router();
 
@@ -13,6 +14,16 @@ router.post(
     next();
   },
   addMeal,
+);
+
+router.get(
+  "/get",
+  authMiddleware,
+  (req, res, next) => {
+    console.log("Incoming req to fetch meals received over backend");
+    next();
+  },
+  fetchMeals,
 );
 
 export default router;

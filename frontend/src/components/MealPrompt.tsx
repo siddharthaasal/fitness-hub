@@ -13,23 +13,8 @@ export default function MealPrompt() {
       { description: mealDescription },
       { withCredentials: true },
     );
-    const raw = response.data.data; // from your AI response
-
-    // Step 1: Remove markdown code block formatting
-    const cleaned = raw.replace(/```json\n?|```/g, "");
-
-    // Step 2: Parse the JSON string to a JS object
-    let parsed;
-    try {
-      parsed = JSON.parse(cleaned);
-      console.log("Parsed Nutrition Data:", parsed);
-    } catch (err) {
-      console.error("Failed to parse JSON:", err);
-    }
-
-    // setTest(true);
-    // setRes(JSON.parse(response.data));
-    // console.log(JSON.stringify(response.data, null, 2));
+    const addedMeal = response.data.meal;
+    console.log("Added meal returned to client: ", addedMeal);
   }
 
   return (

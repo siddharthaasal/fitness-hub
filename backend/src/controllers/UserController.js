@@ -2,6 +2,7 @@ import prisma from "../config/prisma.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { computeNutritionValue } from "../utils/nutritionCalculator.js";
+
 async function signup(req, res) {
     try {
         const { email, password } = req.body;
